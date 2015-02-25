@@ -5,8 +5,6 @@ End-to-end tests related to the cohort management on the LMS Instructor Dashboar
 
 from datetime import datetime
 
-from pymongo import MongoClient
-
 from pytz import UTC, utc
 from bok_choy.promise import EmptyPromise
 from nose.plugins.attrib import attr
@@ -33,8 +31,6 @@ class CohortConfigurationTest(UniqueCourseTest, CohortTestMixin):
         Set up a cohorted course
         """
         super(CohortConfigurationTest, self).setUp()
-
-        self.event_collection = MongoClient()["test"]["events"]
 
         # create course with cohorts
         self.manual_cohort_name = "ManualCohort1"
