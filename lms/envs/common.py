@@ -311,7 +311,7 @@ FEATURES = {
 
     # Expose Mobile REST API. Note that if you use this, you must also set
     # ENABLE_OAUTH2_PROVIDER to True
-    'ENABLE_MOBILE_REST_API': False,
+    'ENABLE_MOBILE_REST_API': True,
 
     # Enable the new dashboard, account, and profile pages
     'ENABLE_NEW_DASHBOARD': False,

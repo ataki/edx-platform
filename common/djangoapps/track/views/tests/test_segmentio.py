@@ -316,6 +316,7 @@ class SegmentIOTrackingTestCase(EventTrackingTestCase):
         ('edx.video.paused', 'pause_video'),
         ('edx.video.stopped', 'stop_video'),
         ('edx.video.loaded', 'load_video'),
+        ('edx.video.position.changed', 'seek_video'),
         ('edx.video.transcript.shown', 'show_transcript'),
         ('edx.video.transcript.hidden', 'hide_transcript'),
     )
