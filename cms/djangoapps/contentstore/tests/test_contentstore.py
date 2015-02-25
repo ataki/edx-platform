@@ -52,6 +52,7 @@ from course_action_state.models import CourseRerunState, CourseRerunUIStateManag
 
 from course_action_state.managers import CourseActionStateItemNotFoundError
 from xmodule.contentstore.content import StaticContent
+from xmodule.modulestore.django import modulestore
 
 
 TEST_DATA_CONTENTSTORE = copy.deepcopy(settings.CONTENTSTORE)
@@ -386,6 +387,23 @@ class ImportRequiredTestCases(ContentStoreTestCase):
         export_to_xml(self.store, content_store, course_id, root_dir, 'test_export')
 
         shutil.rmtree(root_dir)
+
+    def test_import_after_renaming_xml_data(self):
+        """
+        Test that import works fine on split mongo after renaming the blocks url.
+        """
+        content_store = contentstore()
+        split_store = modulestore()._get_modulestore_by_type(ModuleStoreEnum.Type.split)
+        course_before_rename = import_from_xml(split_store, self.user.id, TEST_DATA_DIR, ['course_before_rename'], create_course_if_not_present=True)
+        course_after_rename = import_from_xml(split_store, self.user.id, TEST_DATA_DIR, ['course_after_rename'], create_course_if_not_present=True)
+        all_items = split_store.get_items(course_after_rename[0].id, qualifiers={'category': 'chapter'})
+        for item in all_items:
+            if item.location.block_id == 'renamed_chapter':
+                self.assertIsNotNone(item.published_on)
+                self.assertIsNotNone(item.parent)
+            elif item.location.block_id == 'b9870b9af59841a49e6e02765d0e3bbf':
+                self.assertIsNone(item.published_on)
+                self.assertIsNone(item.parent)
 
     def test_empty_data_roundtrip(self):
         """
